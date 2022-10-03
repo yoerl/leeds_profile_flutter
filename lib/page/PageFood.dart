@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:leads_profile_flutter/page/PageCalculateDailyIntake.dart';
+import 'package:leads_profile_flutter/page/component/widget_single/CommonWidget_TabController_Default.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class PageFood extends StatefulWidget {
@@ -16,77 +17,60 @@ class PageFood extends StatefulWidget {
 }
 
 class _PageFoodState extends State<PageFood> {
-  // final product_type = ['전체보기', '탄수화물', '단백질', '지방'];
-  // final nutrient_list = ['전체보기', '식재료', '완제품', '이색', '보충제'];
-  final product_type = ['전체보기', '식재료', '완제품', '이색', '보충제'];
-  final nutrient_list = ['전체보기', '탄수화물', '단백질', '지방'];
+
+   List<Tab> tabNames_product_type_list = <Tab>[
+     Tab(text: '전체'),
+     Tab(text: '식재료'),
+     Tab(text: '완제품'),
+     Tab(text: '이색'),
+     Tab(text: '보충제'),
+   ];
+
+   List<Widget> tabWidgets_product_type_list = <Widget>[
+     Icon(Icons.search),
+     Icon(Icons.search),
+     Icon(Icons.search),
+     Icon(Icons.search),
+     Icon(Icons.search),
+   ];
+
+  List<Tab> tabNames_nutrient_list = <Tab>[
+    Tab(text: '전체'),
+    Tab(text: '탄수화물'),
+    Tab(text: '단백질'),
+    Tab(text: '지방'),
+  ];
+
+
+  List<Widget> tabWidgets_nutrient_list = <Widget>[
+    Icon(Icons.search),
+    Icon(Icons.search),
+    Icon(Icons.search),
+    Icon(Icons.search),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // 전환부
-    // 숫자바꾸기
-    // 장바구니
-    return DefaultTabController(
-      length: nutrient_list.length,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Container(
-              child: TextButton(
-            onPressed: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('일일 섭취량'),
-                content: PageCalculateDailyIntake(),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('계산'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'OK'),
-                    child: const Text('확인'),
+    return Scaffold(
+
+        body:
+             SafeArea(
+              child: Column(
+                children: [
+                  Text("장바구니, 칼로리 계산, 맞춤형 추천"),
+                  Expanded(
+                    child: CommonWidget_TabController_Default(tabNames: tabNames_nutrient_list, tabWidgets:
+                    [
+                      for (int i = 0; i < tabNames_nutrient_list.length; i++)
+                        CommonWidget_TabController_Default(tabNames: tabNames_product_type_list, tabWidgets: tabWidgets_product_type_list),
+                    ]
+                    ),
                   ),
                 ],
               ),
             ),
-            child: const Text(
-              '일일섭취량계산하기',
-              style: TextStyle(
-                color: Colors.yellow,
-              ),
-            ),
-          )),
-          bottom: TabBar(
-            tabs: nutrient_list.map((String choice) {
-              // text는 탭바에 표시할 내용. 지금은 아이콘 없이 문자열만 사용.
-              return Tab(text: choice);
-            }).toList(),
-            isScrollable: true,
-          ),
-        ),
-        body: TabBarView(
-          children: nutrient_list.map((String choice) {
-            Widget Widget_Result = Column(
-              children: <Widget>[
-                DefaultTabController(
-                  length: product_type.length,
-                  child: TabBar(
-                    labelColor: Colors.black,
-                    tabs: product_type.map((String choice) {
-                      // text는 탭바에 표시할 내용. 지금은 아이콘 없이 문자열만 사용.
-                      return Tab(text: choice);
-                    }).toList(),
-                    isScrollable: true,
-                  ),
-                )
-              ],
-            );
-
-            return Widget_Result;
-          }).toList(),
-        ),
-      ),
     );
+
   }
 }
+
